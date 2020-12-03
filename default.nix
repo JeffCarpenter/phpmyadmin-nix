@@ -9,11 +9,11 @@ let
 
   phpmyadminBase = stdenv.mkDerivation rec {
     pname = "phpmyadmin";
-    version = "4.9.7";
+    version = "5.0.4";
 
     src = fetchurl {
       url = "https://files.phpmyadmin.net/phpMyAdmin/${version}/phpMyAdmin-${version}-all-languages.tar.xz";
-      sha256 = "1fhz55hlkbqn80wd1gslrc7vs66bcqianks6k4ybi3nqk7rfcji9";
+      sha256 = "1nspq02vyd9cli5hk6vnvv1q8xyivg5nqrrfyvsa8karishc2y0m";
     };
 
     phases = [ "unpackPhase" "patchPhase" ];
@@ -67,8 +67,8 @@ let
       PMA_TEMP_DIR="$(mktemp -d --tmpdir phpmyadmin.XXXXXX)" || :
     (( delete_tmp_dir )) && \
       trap 'echo Deleting "$PMA_TEMP_DIR"; rm -R "$PMA_TEMP_DIR"' EXIT || :
-    export PMA_TEMP_DIR
-    export PMA_CONFIG_DIR
+    export PMA_TEMP_DIR="''${PMA_TEMP_DIR%%/}/"
+    export PMA_CONFIG_DIR="''${PMA_CONFIG_DIR%%/}/"
 
     cd ${phpmyadminBase}
     ${php}/bin/php -S $listen -c ${phpIni}

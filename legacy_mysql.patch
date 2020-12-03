@@ -1,8 +1,8 @@
 diff --git a/libraries/classes/DatabaseInterface.php b/libraries/classes/DatabaseInterface.php
-index 6e3d998..3de276d 100644
+index 179285852d..2196b18d03 100644
 --- a/libraries/classes/DatabaseInterface.php
 +++ b/libraries/classes/DatabaseInterface.php
-@@ -1483,7 +1483,7 @@ class DatabaseInterface
+@@ -1548,7 +1548,7 @@ class DatabaseInterface
          /* Locale for messages */
          $locale = LanguageManager::getInstance()->getCurrentLanguage()->getMySQLLocale();
          if (! empty($locale)) {
@@ -11,21 +11,3 @@ index 6e3d998..3de276d 100644
                  "SET lc_messages = '" . $locale . "';",
                  DatabaseInterface::CONNECT_USER,
                  self::QUERY_STORE
-diff --git a/libraries/common.inc.php b/libraries/common.inc.php
-index ed92fea..1fe7e60 100644
---- a/libraries/common.inc.php
-+++ b/libraries/common.inc.php
-@@ -390,13 +390,6 @@ if (! defined('PMA_MINIMUM_COMMON')) {
-         /* Log success */
-         Logging::logUser($cfg['Server']['user']);
- 
--        if ($GLOBALS['dbi']->getVersion() < $cfg['MysqlMinVersion']['internal']) {
--            Core::fatalError(
--                __('You should upgrade to %s %s or later.'),
--                array('MySQL', $cfg['MysqlMinVersion']['human'])
--            );
--        }
--
-         // Sets the default delimiter (if specified).
-         if (!empty($_REQUEST['sql_delimiter'])) {
-             PhpMyAdmin\SqlParser\Lexer::$DEFAULT_DELIMITER = $_REQUEST['sql_delimiter'];
