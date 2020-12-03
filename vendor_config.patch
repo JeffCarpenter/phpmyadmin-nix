@@ -1,0 +1,22 @@
+diff --git a/libraries/vendor_config.php b/libraries/vendor_config.php
+index 17b4305..9119625 100644
+--- a/libraries/vendor_config.php
++++ b/libraries/vendor_config.php
+@@ -22,7 +22,7 @@ define('AUTOLOAD_FILE', './vendor/autoload.php');
+ /**
+  * Directory where cache files are stored.
+  */
+-define('TEMP_DIR', './tmp/');
++define('TEMP_DIR', getenv('PMA_TEMP_DIR') ? getenv('PMA_TEMP_DIR') . '/' : './tmp/');
+ 
+ /**
+  * Path to changelog file, can be gzip compressed. Useful when you want to
+@@ -46,7 +46,7 @@ define('SQL_DIR', './sql/');
+  * It is not used directly in code, just a convenient
+  * define used further in this file.
+  */
+-define('CONFIG_DIR', '');
++define('CONFIG_DIR', getenv('PMA_CONFIG_DIR') ? getenv('PMA_CONFIG_DIR') . '/' : '');
+ 
+ /**
+  * Filename of a configuration file.
