@@ -1,13 +1,15 @@
 diff --git a/libraries/classes/DatabaseInterface.php b/libraries/classes/DatabaseInterface.php
-index 179285852d..2196b18d03 100644
+index eb7e56501b..cf20e4c53c 100644
 --- a/libraries/classes/DatabaseInterface.php
 +++ b/libraries/classes/DatabaseInterface.php
-@@ -1548,7 +1548,7 @@ class DatabaseInterface
+@@ -1114,7 +1114,7 @@ public function postConnect(): void
          /* Locale for messages */
          $locale = LanguageManager::getInstance()->getCurrentLanguage()->getMySQLLocale();
-         if (! empty($locale)) {
--            $this->query(
-+            $this->tryQuery(
-                 "SET lc_messages = '" . $locale . "';",
-                 DatabaseInterface::CONNECT_USER,
-                 self::QUERY_STORE
+         if ($locale) {
+-            $this->query("SET lc_messages = '" . $locale . "';");
++            $this->tryQuery("SET lc_messages = '" . $locale . "';");
+         }
+
+         // Set timezone for the session, if required.
+--
+2.36.0

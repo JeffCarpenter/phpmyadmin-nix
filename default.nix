@@ -4,20 +4,13 @@
   defaultConfig ? ./config.inc.php,
 }:
 with pkgs; let
-  defaultConfigFolder = linkFarm "phpmyadmin-config" [
-    {
-      name = "config.inc.php";
-      path = defaultConfig;
-    }
-  ];
-
   phpmyadminBase = stdenv.mkDerivation rec {
     pname = "phpmyadmin";
-    version = "5.1.3";
+    version = "5.2.0";
 
     src = fetchurl {
       url = "https://files.phpmyadmin.net/phpMyAdmin/${version}/phpMyAdmin-${version}-all-languages.tar.xz";
-      sha256 = "sha256-xWL+3cD4/15pYpET8nOg0CSmX7koxI6JzmFHRNR4KW8=";
+      sha256 = "sha256-ZtoxyilfBhgqw/Lm6WBX3IJMRZuu30sp3m7Q074DkjA=";
     };
 
     phases = ["unpackPhase" "patchPhase"];
@@ -49,7 +42,7 @@ with pkgs; let
     listen="${listenDefault}"
     random_tmp_dir=0
     delete_tmp_dir=0
-    : ''${PMA_CONFIG_DIR:="${defaultConfigFolder}"}
+    : ''${PMA_CONFIG_FILE:="${defaultConfig}"}
     : ''${PMA_TEMP_DIR:="$PWD/tmp"}
 
     while getopts "l:c:t:rd" opt; do
@@ -57,7 +50,7 @@ with pkgs; let
         l) listen="$OPTARG";;
         r) random_tmp_dir=1; delete_tmp_dir=1;;
         d) delete_tmp_dir=1;;
-        c) PMA_CONFIG_DIR="$(readlink -f "$OPTARG")";;
+        c) PMA_CONFIG_FILE="$(readlink -f "$OPTARG")";;
         t) PMA_TEMP_DIR="$OPTARG";;
       esac
     done
@@ -72,7 +65,7 @@ with pkgs; let
     (( delete_tmp_dir )) && \
       trap 'echo Deleting "$PMA_TEMP_DIR"; rm -R "$PMA_TEMP_DIR"' EXIT || :
     export PMA_TEMP_DIR="''${PMA_TEMP_DIR%%/}/"
-    export PMA_CONFIG_DIR="''${PMA_CONFIG_DIR%%/}/"
+    export PMA_CONFIG_FILE="''${PMA_CONFIG_FILE}"
 
     cd ${phpmyadminBase}
     ${php}/bin/php -S $listen -c ${phpIni}
