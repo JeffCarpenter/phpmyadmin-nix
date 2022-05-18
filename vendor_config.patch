@@ -1,17 +1,17 @@
 diff --git a/libraries/vendor_config.php b/libraries/vendor_config.php
-index 669821025b..a2c1673a93 100644
+index d3d77be71b..8e4fa3f612 100644
 --- a/libraries/vendor_config.php
 +++ b/libraries/vendor_config.php
-@@ -24,7 +24,7 @@ define('AUTOLOAD_FILE', ROOT_PATH . 'vendor/autoload.php');
+@@ -24,7 +24,7 @@ define('AUTOLOAD_FILE', ROOT_PATH . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.p
  /**
   * Directory where cache files are stored.
   */
--define('TEMP_DIR', ROOT_PATH . 'tmp/');
-+define('TEMP_DIR', getenv('PMA_TEMP_DIR') ?: ROOT_PATH . 'tmp/');
+-define('TEMP_DIR', ROOT_PATH . 'tmp' . DIRECTORY_SEPARATOR);
++define('TEMP_DIR', getenv('PMA_TEMP_DIR') ?: ROOT_PATH . 'tmp' . DIRECTORY_SEPARATOR);
  
  /**
   * Path to changelog file, can be gzip compressed. Useful when you want to
-@@ -48,7 +48,7 @@ define('SQL_DIR', ROOT_PATH . 'sql/');
+@@ -48,7 +48,7 @@ define('SQL_DIR', ROOT_PATH . 'sql' . DIRECTORY_SEPARATOR);
   * It is not used directly in code, just a convenient
   * define used further in this file.
   */

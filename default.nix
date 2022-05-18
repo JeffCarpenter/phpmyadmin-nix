@@ -1,22 +1,26 @@
-{ pkgs ? import <nixpkgs> { }, listenDefault ? "127.0.0.1:8080", defaultConfig ? ./config.inc.php }:
-
-with pkgs;
-let
-  defaultConfigFolder = linkFarm "phpmyadmin-config" [{
-    name = "config.inc.php";
-    path = defaultConfig;
-  }];
+{
+  pkgs ? import <nixpkgs> {},
+  listenDefault ? "127.0.0.1:1080",
+  defaultConfig ? ./config.inc.php,
+}:
+with pkgs; let
+  defaultConfigFolder = linkFarm "phpmyadmin-config" [
+    {
+      name = "config.inc.php";
+      path = defaultConfig;
+    }
+  ];
 
   phpmyadminBase = stdenv.mkDerivation rec {
     pname = "phpmyadmin";
-    version = "5.0.4";
+    version = "5.1.0";
 
     src = fetchurl {
       url = "https://files.phpmyadmin.net/phpMyAdmin/${version}/phpMyAdmin-${version}-all-languages.tar.xz";
-      sha256 = "1nspq02vyd9cli5hk6vnvv1q8xyivg5nqrrfyvsa8karishc2y0m";
+      sha256 = "qozPNX9nIBI4TfNOHCvHAUdHZ2HIRYoNrWIzSX4ULGg=";
     };
 
-    phases = [ "unpackPhase" "patchPhase" ];
+    phases = ["unpackPhase" "patchPhase"];
 
     unpackPhase = ''
       mkdir $out
@@ -24,10 +28,10 @@ let
       tar --strip-components=1 -xf $src
     '';
 
-    patches = [ ./legacy_mysql.patch ./vendor_config.patch ];
+    patches = [./legacy_mysql.patch ./vendor_config.patch];
   };
 
-  phpIni = runCommand "php.ini" { } ''
+  phpIni = runCommand "php.ini" {} ''
     cat ${php}/etc/php.ini > $out
     cat <<EOF >> $out
     [PHP]
@@ -74,4 +78,4 @@ let
     ${php}/bin/php -S $listen -c ${phpIni}
   '';
 in
-phpmyadminRun
+  phpmyadminRun
