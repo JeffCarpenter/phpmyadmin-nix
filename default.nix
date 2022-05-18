@@ -13,11 +13,11 @@ with pkgs; let
 
   phpmyadminBase = stdenv.mkDerivation rec {
     pname = "phpmyadmin";
-    version = "5.1.0";
+    version = "5.1.3";
 
     src = fetchurl {
       url = "https://files.phpmyadmin.net/phpMyAdmin/${version}/phpMyAdmin-${version}-all-languages.tar.xz";
-      sha256 = "qozPNX9nIBI4TfNOHCvHAUdHZ2HIRYoNrWIzSX4ULGg=";
+      sha256 = "sha256-xWL+3cD4/15pYpET8nOg0CSmX7koxI6JzmFHRNR4KW8=";
     };
 
     phases = ["unpackPhase" "patchPhase"];
